@@ -1,5 +1,18 @@
 
-# What you need prepare??
+# What Skills Do You Need to Become a Opensource  Maker for c++???
+* C++ STL（Standard Template Library）\
+    https://cplusplus.com/reference/stl/
+* Git \
+    https://git-scm.com/
+* Cmake \
+    https://cmake.org/
+* Conan \
+    https://docs.conan.io/en/latest/
+* GoogleTest \
+    https://google.github.io/googletest/
+
+
+## What you need to prepare??
 
 ### Install conan
 ```console
@@ -7,7 +20,7 @@ $ pip install conan
 ```
 
 
-# Let's start your first open source >///<
+## Let's start your first opensource ^^
 
 ### Use `conan install` to download all package
 ```console
