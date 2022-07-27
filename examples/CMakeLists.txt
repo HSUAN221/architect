@@ -1,4 +1,4 @@
-set(example_name binary_tree_example)
+set(example_name BT_Traversal_example)
 add_gtest_with_libraries(${PROJECT_NAME}_${example_name} ${example_name}.cpp ${PROJECT_NAME})
 target_link_libraries(${PROJECT_NAME}_${example_name} PUBLIC ${PROJECT_NAME})
 target_link_libraries(${PROJECT_NAME}_${example_name} PUBLIC Eigen3::Eigen)
