@@ -13,7 +13,7 @@
 #include <stdexcept>
 #include <limits>
 #include <numeric>
-#include <Eigen/Eigen>
+#include <memory>
 
 namespace architect {
   using size_type = size_t;
