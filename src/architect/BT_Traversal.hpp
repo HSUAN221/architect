@@ -111,13 +111,6 @@ class binary_tree {
         return current;
     }
 
-    node_ptr_type mostright(node_ptr_type current) {
-        while (current->right_ != nullptr) {
-            current = current->right_;
-        }
-        return current;
-    }
-
     node_ptr_type inorderSuccessor(node_ptr_type current) {
         if (current->right_) {
             return mostleft(current->right_);
