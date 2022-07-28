@@ -111,7 +111,7 @@ class binary_tree {
         return current;
     }
 
-    node_ptr_type inorderSuccessor(node_ptr_type current) {
+    node_ptr_type InorderSuccessor(node_ptr_type current) {
         if (current->right_) {
             return mostleft(current->right_);
         }
@@ -129,7 +129,37 @@ class binary_tree {
 
         while (current) {
             std::cout << current->data_ << " ";
-            current = inorderSuccessor(current);
+            current = InorderSuccessor(current);
+        }
+        return true;
+    }
+
+    node_ptr_type mostright(node_ptr_type current) {
+        while (current->right_) {
+            current = current->right_;
+        }
+        return current;
+    }
+
+    node_ptr_type InorderPredecessor(node_ptr_type current) {
+        if (current->left_) {
+            return mostright(current->left_);
+        }
+
+        node_ptr_type predecessor = current->parent_;
+        while (predecessor && current == predecessor->left_) {
+            current = predecessor;
+            predecessor = predecessor->parent_;
+        }
+        return predecessor;
+    }
+
+    bool inorder_reverse(node_ptr_type root) {
+        node_ptr_type current{ mostright(root)};
+
+        while (current) {
+            std::cout << current->data_ << " ";
+            current = InorderPredecessor(current);
         }
         return true;
     }

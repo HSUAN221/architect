@@ -47,6 +47,6 @@ int main(int argc, char **argv) {
 
     binary_tree BT(nodeA);
 
-    BT.inorder(BT.root());
+    BT.inorder_reverse(BT.root());
     return 0;
 }
