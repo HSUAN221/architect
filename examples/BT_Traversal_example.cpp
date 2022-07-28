@@ -44,5 +44,7 @@ int main(int argc, char **argv) {
     nodeI->setParent(nodeF);
 
     binary_tree BT(nodeA);
+
+    BT.postorder(nodeA);
     return 0;
 }

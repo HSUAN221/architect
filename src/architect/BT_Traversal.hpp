@@ -55,15 +55,41 @@ class binary_tree {
     explicit binary_tree(node_ptr_type node)
     : root_(node) {}
 
-    bool preorder(node_ptr_type current);
-    bool inorder(node_ptr_type current);
-    bool postorder(node_ptr_type current);
-    bool levelorder();
+    bool preorder(node_ptr_type current) {
+        if (current) {
+            std::cout << current->data_ << std::endl;
+            preorder(current->left_);
+            preorder(current->right_);
+        }
+        return true;
+    }
+
+    bool inorder(node_ptr_type current) {
+        if (current) {
+            inorder(current->left_);
+            std::cout << current->data_ << std::endl;
+            inorder(current->right_);
+        }
+        return true;
+    }
+    bool postorder(node_ptr_type current) {
+        if (current) {
+            postorder(current->left_);
+            postorder(current->right_);
+            std::cout << current->data_ << std::endl;
+        }
+        return true;
+    }
+    bool levelorder() {
+        std::queue<node_ptr_type> q;
+    }
 
 
  private:
     std::shared_ptr<tree_node> root_;
 };
+
+
 
 }  // namespace architect
 
