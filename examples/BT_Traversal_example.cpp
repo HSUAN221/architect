@@ -2,6 +2,8 @@
 #include <architect/architect.hpp>
 using architect::tree_node;
 using architect::binary_tree;
+
+
 int main(int argc, char **argv) {
     using node_ptr_type = std::shared_ptr<tree_node>;
 
@@ -45,6 +47,6 @@ int main(int argc, char **argv) {
 
     binary_tree BT(nodeA);
 
-    BT.postorder(nodeA);
+    BT.inorder(BT.root());
     return 0;
 }
