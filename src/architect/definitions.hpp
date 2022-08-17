@@ -15,6 +15,7 @@
 #include <numeric>
 #include <memory>
 #include <queue>
+#include <cctype>
 
 namespace architect {
   using size_type = size_t;

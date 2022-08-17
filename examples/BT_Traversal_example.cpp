@@ -48,5 +48,15 @@ int main(int argc, char **argv) {
     binary_tree BT(nodeA);
 
     BT.inorder_reverse(BT.root());
+    std::cout << std::endl;
+
+    std::vector<std::string> chr_vec{"A", "B", "C", "D"
+    , "E", "F", "x", "x", "x", "G", "H", "x", "I"};
+    for (const auto& iter : chr_vec) {
+        std::cout << iter << std::endl;
+    }
+
+    binary_tree BT1(chr_vec);
+   
     return 0;
 }

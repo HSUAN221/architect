@@ -52,6 +52,37 @@ class binary_tree {
  public:
     binary_tree() : root_(nullptr) {}
 
+    explicit binary_tree(const std::vector<string_type>& str) {
+        root_ = std::make_shared<tree_node>();
+        root_->data_ = str[0];
+        LevelorderConstruct(str);
+    }
+
+    bool LevelorderConstruct(const std::vector<string_type>& str) {
+        node_ptr_type current = root_;
+        std::queue<node_ptr_type> q;
+        string_type data{"x"};
+
+        for (const auto& iter : str) {
+            if (iter[0] >= 65 && iter[0] <= 90) {
+                node_ptr_type new_node = std::make_shared<tree_node>(iter);
+                new_node->parent_ = current;
+                current->left_ = new_node;
+                q.push(new_node);
+            }
+
+            if (iter[0] >= 65 && iter[0] <= 90) {
+                node_ptr_type new_node = std::make_shared<tree_node>(iter);
+                new_node->parent_ = current;
+                current->right_ = new_node;
+                q.push(new_node);
+            }
+
+            current = q.front();
+        }
+        return true;
+    }
+
     node_ptr_type root() {
         return root_;
     }
