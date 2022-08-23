@@ -1,6 +1,7 @@
 // Copyright (c)
 #ifndef SRC_ARCHITECT_DEPENDENCY_INVERSION_PRINCIPLE_HPP_
 #define SRC_ARCHITECT_DEPENDENCY_INVERSION_PRINCIPLE_HPP_
+namespace architect {
 
 class SwitchDevice {
  private:
@@ -12,17 +13,17 @@ class SwitchDevice {
     friend class Button;
 };
 
-class lamp : public SwitchDevice {
+class Lamp : public SwitchDevice {
  public:
-    lamp() {}
-    ~lamp() = default;
+    Lamp() {}
+    ~Lamp() = default;
     bool turnOn() override {
-        std::cout << "lamp turn on" << std::endl;
+        std::cout << "Lamp turn on" << std::endl;
         return true;
     }
 
     bool turnOff() override {
-        std::cout << "lamp turn off" << std::endl;
+        std::cout << "Lamp turn off" << std::endl;
         return true;
     }
 };
@@ -41,7 +42,7 @@ class Button {
 
 // CRPT
 template<typename specific_object>
-class interactiveObject1 {
+class IteractiveObject1 {
  public:
     void interact() {
         std::cout << "interact" << std::endl;
@@ -54,7 +55,7 @@ class interactiveObject1 {
     }
 };
 
-class Door : public interactiveObject1<Door> {
+class Door : public IteractiveObject1<Door> {
  private:
     bool open_{false};
     std::string name_;
@@ -81,7 +82,7 @@ class Door : public interactiveObject1<Door> {
     }
 };
 
-class Table : public interactiveObject1<Table> {
+class Table : public IteractiveObject1<Table> {
  private:
     std::string name_;
 
@@ -102,17 +103,18 @@ class Table : public interactiveObject1<Table> {
     }
 };
 
-class player {
+class Player {
  public:
     template<typename specific_object>
-    void interactWith(interactiveObject1<specific_object>& object) {
+    void interactWith(IteractiveObject1<specific_object>& object) {
         object.interact();
     }
 
     template<typename specific_object>
-    void destroy(interactiveObject1<specific_object>& object) {
+    void destroy(IteractiveObject1<specific_object>& object) {
         object.destroy();
     }
 };
 
+}  // namespace architect
 #endif  // SRC_ARCHITECT_DEPENDENCY_INVERSION_PRINCIPLE_HPP_
