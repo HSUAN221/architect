@@ -7,11 +7,10 @@ int main(int argc, char **argv) {
     architect::vector<double> v2 = {34.90, 111.9, 45.12, 90.5};
     architect::vector<double> v3 = {34.90, 111.9, 45.12, 90.5};
 
-    auto vec = v0 + v1 + v2 + v3;
+    auto vec = v0 + v1 + v2;
     std::cout << vec[0] << std::endl;
-
-    auto vec1 = v0 * v1 * v2 * v3;
-    std::cout << vec1[0] << std::endl;
-
+    std::cout << vec[1] << std::endl;
+    std::cout << vec[2] << std::endl;
+    std::cout << vec[3] << std::endl;
     return 0;
 }
