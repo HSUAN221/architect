@@ -8,4 +8,5 @@
 #include <architect/fight_strategy.hpp>
 #include <architect/factory.hpp>
 #include <architect/expression_templates.hpp>
+#include <architect/builder.hpp>
 #endif  // SRC_ARCHITECT_ARCHITECT_HPP_
