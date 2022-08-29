@@ -6,6 +6,7 @@
 #include <architect/BT_Traversal.hpp>
 #include <architect/dependency_inversion_principle.hpp>
 #include <architect/fight_strategy.hpp>
+#include <architect/decorator.hpp>
 #include <architect/factory.hpp>
 #include <architect/expression_templates.hpp>
 #include <architect/builder.hpp>

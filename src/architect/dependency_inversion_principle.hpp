@@ -4,18 +4,16 @@
 namespace architect {
 
 class SwitchDevice {
- private:
-    virtual bool turnOn() = 0;
-    virtual bool turnOff() = 0;
  public:
     SwitchDevice() = default;
-    virtual ~SwitchDevice() = default;
-    friend class Button;
+    ~SwitchDevice() = default;
+    virtual bool turnOn() = 0;
+    virtual bool turnOff() = 0;
 };
 
 class Lamp : public SwitchDevice {
  public:
-    Lamp() {}
+    Lamp() = default;
     ~Lamp() = default;
     bool turnOn() override {
         std::cout << "Lamp turn on" << std::endl;
