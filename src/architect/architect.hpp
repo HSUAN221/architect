@@ -10,4 +10,5 @@
 #include <architect/factory.hpp>
 #include <architect/expression_templates.hpp>
 #include <architect/builder.hpp>
+#include <architect/observer.hpp>
 #endif  // SRC_ARCHITECT_ARCHITECT_HPP_
