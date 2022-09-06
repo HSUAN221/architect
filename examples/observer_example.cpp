@@ -31,10 +31,10 @@ auto main() -> int {
     const auto& subject = std::make_shared<Subject>();
 
     const auto& observer1 = std::make_shared<Observer>();
-    observer1->setSubject(subject);
+    observer1->addMeToTheList(subject);
 
     const auto& observer2 = std::make_shared<Observer>();
-    observer2->setSubject(subject);
+    observer2->addMeToTheList(subject);
 
     std::cout << "  ---Use createMessage---" << std::endl;
     subject->createMessage("YES Amy");
