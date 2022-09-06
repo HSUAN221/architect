@@ -79,7 +79,7 @@ class Observer : public ObserverInterface, public std::enable_shared_from_this<O
         std::cout << "Goodbye, I was the Observer \"" << this->number_ << "\".\n";
     }
 
-    void setSubject(const subject_ptr& subject) {
+    void addMeToTheList(const subject_ptr& subject) {
         subject_ = subject;
         std::cout << "Hi, I'm the Observer \"" << ++Observer::static_number_ << "\".\n";
         number_ = Observer::static_number_;
