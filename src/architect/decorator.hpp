@@ -36,11 +36,8 @@ class HamDecorator : public CondimentDecorator {
     std::shared_ptr<Spaghetti> spaghetti_{nullptr};
 
  public:
-    explicit HamDecorator(const std::shared_ptr<Spaghetti>& spaghetti) {
-        if (spaghetti) {
-            spaghetti_ = spaghetti;
-        }
-    }
+    explicit HamDecorator(const std::shared_ptr<Spaghetti>& spaghetti)
+    : spaghetti_(spaghetti) {}
 
     float getPrice() override {
         return spaghetti_->getPrice() + 38.0;
@@ -61,11 +58,8 @@ class EggDecorator : public CondimentDecorator {
     std::shared_ptr<Spaghetti> spaghetti_{nullptr};
 
  public:
-    explicit EggDecorator(const std::shared_ptr<Spaghetti>& spaghetti) {
-        if (spaghetti) {
-            spaghetti_ = spaghetti;
-        }
-    }
+    explicit EggDecorator(const std::shared_ptr<Spaghetti>& spaghetti)
+    : spaghetti_(spaghetti) {}
 
     float getPrice() override {
         return spaghetti_->getPrice() + 12.0;
