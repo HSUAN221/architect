@@ -18,6 +18,7 @@
 #include <cctype>
 #include <list>
 #include <cassert>
+#include <algorithm>
 
 namespace architect {
   using size_type = size_t;

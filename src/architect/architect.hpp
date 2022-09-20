@@ -11,4 +11,5 @@
 #include <architect/expression_templates.hpp>
 #include <architect/builder.hpp>
 #include <architect/observer.hpp>
+#include <architect/adapter.hpp>
 #endif  // SRC_ARCHITECT_ARCHITECT_HPP_
