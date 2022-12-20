@@ -13,13 +13,14 @@ auto main() -> int {
 
     std::cout << "=======DisjointSet======" << std::endl;
     architect::DisjointSet ds;
-    std::vector<size_t> vertrex_list{5, 0, 1, 2, 3};
+    std::vector<size_t> vertrex_list{5, 0, 1, 2, 3, 101};
     for (const auto& v : vertrex_list)
         ds.makeSet(v);
 
     ds.connect(0, 5);
     ds.connect(1, 2);
-    ds.connect(1, 5);
+    ds.connect(1, 101);
+    ds.connect(0, 101);
     for (const auto& v : vertrex_list)
         std::cout << "vertex= " << v << " " << ds.findSet(v) << std::endl;
     return 0;
