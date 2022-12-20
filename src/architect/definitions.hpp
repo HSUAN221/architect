@@ -19,6 +19,8 @@
 #include <list>
 #include <cassert>
 #include <algorithm>
+#include <unordered_map>
+#include <map>
 
 namespace architect {
   using size_type = size_t;

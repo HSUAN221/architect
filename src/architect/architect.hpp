@@ -12,4 +12,5 @@
 #include <architect/builder.hpp>
 #include <architect/observer.hpp>
 #include <architect/adapter.hpp>
+#include <architect/disjoint_set.hpp>
 #endif  // SRC_ARCHITECT_ARCHITECT_HPP_

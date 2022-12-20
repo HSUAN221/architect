@@ -2,6 +2,7 @@
 #ifndef SRC_ARCHITECT_EXPRESSION_TEMPLATES_HPP_
 #define SRC_ARCHITECT_EXPRESSION_TEMPLATES_HPP_
 namespace architect {
+namespace expression {
 
 template <typename T>
 class vector {
@@ -58,6 +59,6 @@ VectorSum<E1, E2> operator+ (const E1& u, const E2& v) {
     return VectorSum<E1, E2>(u, v);
 }
 
-
+}  // namespace expression
 }  // namespace architect
 #endif  // SRC_ARCHITECT_EXPRESSION_TEMPLATES_HPP_
