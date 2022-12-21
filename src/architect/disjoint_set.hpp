@@ -47,8 +47,8 @@ class DisjointSet {
             throw std::invalid_argument(std::to_string(x)
             + std::to_string(y) + " isn't exist");
 
-        auto root_x = findSet(x);
-        auto root_y = findSet(y);
+        const auto root_x = findSet(x);
+        const auto root_y = findSet(y);
         auto& root_x_parent = element_list_[root_x].parent;
         auto& root_y_parent = element_list_[root_y].parent;
         auto& root_X_rank = element_list_[root_x].rank;
@@ -93,8 +93,8 @@ class DisjointSetFixSize {
     }
 
     void connect(size_t x, size_t y) {
-        auto root_x = findSet(x);
-        auto root_y = findSet(y);
+        const auto root_x = findSet(x);
+        const auto root_y = findSet(y);
         if (root_x != root_y) {
             if (rank_[root_x] > rank_[root_y]) {
                 parent_[root_y] = root_x;

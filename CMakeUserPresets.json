@@ -1,0 +1,9 @@
+{
+    "version": 4,
+    "vendor": {
+        "conan": {}
+    },
+    "include": [
+        "/home/luca/workspaces/architect/build/CMakePresets.json"
+    ]
+}

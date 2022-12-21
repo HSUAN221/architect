@@ -3,6 +3,7 @@
 #define SRC_ARCHITECT_ARCHITECT_HPP_
 
 #include <architect/definitions.hpp>
+#include <architect/utility.hpp>
 #include <architect/BT_Traversal.hpp>
 #include <architect/dependency_inversion_principle.hpp>
 #include <architect/fight_strategy.hpp>
@@ -13,4 +14,5 @@
 #include <architect/observer.hpp>
 #include <architect/adapter.hpp>
 #include <architect/disjoint_set.hpp>
+#include <architect/labeling.hpp>
 #endif  // SRC_ARCHITECT_ARCHITECT_HPP_
