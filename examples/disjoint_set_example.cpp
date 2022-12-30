@@ -24,27 +24,35 @@ auto main() -> int {
     for (const auto& v : vertrex_list)
         std::cout << "vertex= " << v << " " << ds.findSet(v) << std::endl;
 
-    int rows = 10, cols = 10;
+    int rows = 10000, cols = 10000;
     architect::DomainBuilder db(rows, cols);
-    // db.build();
+    db.build();
     auto domain = db.parse();
 
-    for (int i = 0; i < rows; ++i) {
-        for (int j = 0; j < cols; ++j) {
-            std::cout << domain[i][j] << " ";
-        }
-        std::cout << std::endl;
-    }
+    // for (int i = 0; i < rows; ++i) {
+    //     for (int j = 0; j < cols; ++j) {
+    //         std::cout << domain[i][j] << " ";
+    //     }
+    //     std::cout << std::endl;
+    // }
+
+
     std::cout << "into labeling..." << std::endl;
+    architect::Timer t1;
+    t1.start();
     architect::Labeling label(domain);
     auto labels = label.getDomainSet();
+    t1.stop();
+    std::cout << rows * cols << " " << t1.elapsedTime() << std::endl;
 
+    std::ofstream output("data/output.txt");
     for (int i = 0; i < labels.size(); ++i) {
         for (int j = 0; j < labels[0].size(); ++j) {
-            std::cout << std::setw(5) << labels[i][j] << " ";
+            output << std::setw(5) << labels[i][j] << " ";
         }
-        std::cout << std::endl;
+        output << std::endl;
     }
+    output.close();
 
     /// viewer
     using vtkio::Vtu;
@@ -62,7 +70,10 @@ auto main() -> int {
     for (int i = 0; i < labels.size(); ++i) {
         for (int j = 0; j < labels[0].size(); ++j) {
             points.addPoint(i, j, 0);
-            air.addData() = {labels[i][j] * 100};
+            if (labels[i][j] > 0)
+                air.addData() = {labels[i][j]};
+            else
+                air.addData() = {-100};
         }
     }
 
@@ -71,7 +82,7 @@ auto main() -> int {
     Vtu vtu;
 
     /// open vtu file
-    vtu.open("test_vtu2d.vtu");
+    vtu.open("void.vtu");
 
     // output unstructured grid data
     if (vtu)
@@ -79,10 +90,5 @@ auto main() -> int {
 
     // close vtu file
     vtu.close();
-
-
-
-
-
     return 0;
 }
