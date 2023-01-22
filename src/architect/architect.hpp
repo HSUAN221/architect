@@ -16,4 +16,5 @@
 #include <architect/disjoint_set.hpp>
 #include <architect/labeling.hpp>
 #include <architect/visitor.hpp>
+#include <architect/singleton.hpp>
 #endif  // SRC_ARCHITECT_ARCHITECT_HPP_
