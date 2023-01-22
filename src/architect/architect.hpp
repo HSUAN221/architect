@@ -15,4 +15,5 @@
 #include <architect/adapter.hpp>
 #include <architect/disjoint_set.hpp>
 #include <architect/labeling.hpp>
+#include <architect/visitor.hpp>
 #endif  // SRC_ARCHITECT_ARCHITECT_HPP_
