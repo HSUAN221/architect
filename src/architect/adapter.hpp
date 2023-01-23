@@ -21,6 +21,7 @@ class Target {
  * with the existing client code. The Adaptee needs some adaptation before the
  * client code can use it.
  */
+/// 是一個新的物件，但他的介面無法直接匹配，把 Adaptee 轉換成目標接口
 class Adaptee {
  public:
     Adaptee() = default;

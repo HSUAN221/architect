@@ -18,15 +18,11 @@ int main(int argc, char **argv) {
         // std::cout << v.at(3) << "\n";
         throw backend::IOException();
         // throw std::invalid_argument("Division by zero condition!");
-    } catch (const backend::IOException& my_exception) {
-        std::cout << my_exception.what() << std::endl;
-        architect::LoggerA::getInstance().info(my_exception.what());
-        architect::LoggerB::info(my_exception.what());
-        architect::LoggerB::show(my_exception.what());
-    } catch (const std::invalid_argument i) {
-        std::cout << i.what() << std::endl;
     } catch (const std::exception& e) {
         std::cout << e.what() << std::endl;
+        architect::LoggerA::getInstance().info(e.what());
+        architect::LoggerB::info(e.what());
+        architect::LoggerB::show(e.what());
     }
     return 0;
 }
