@@ -24,6 +24,7 @@
 #include <map>
 #include <random>
 #include <iomanip>
+#include <chrono>  // NOLINT
 
 
 namespace architect {

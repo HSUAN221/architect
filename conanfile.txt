@@ -1,6 +1,6 @@
 [requires]
 eigen/3.4.0
-vtkio/0.2.1
+
 
 [tool_requires]
 gtest/1.11.0
