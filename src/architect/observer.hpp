@@ -1,4 +1,5 @@
 // Copyright (c)
+// 當多個 Class 都需要接收同一種資料的變化時，就適合使用 Observer Pattern
 #ifndef SRC_ARCHITECT_OBSERVER_HPP_
 #define SRC_ARCHITECT_OBSERVER_HPP_
 namespace architect {
