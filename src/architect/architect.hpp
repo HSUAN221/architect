@@ -17,4 +17,5 @@
 #include <architect/labeling.hpp>
 #include <architect/visitor.hpp>
 #include <architect/singleton.hpp>
+#include <architect/prototype.hpp>
 #endif  // SRC_ARCHITECT_ARCHITECT_HPP_

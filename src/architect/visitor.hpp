@@ -87,8 +87,6 @@ class AreaCalculator : public ShapeVisitor {
     double getSquareArea() const noexcept {
         return square_area_;
     }
-
-
 };
 
 
