@@ -18,4 +18,5 @@
 #include <architect/visitor.hpp>
 #include <architect/singleton.hpp>
 #include <architect/prototype.hpp>
+#include <architect/mediator.hpp>
 #endif  // SRC_ARCHITECT_ARCHITECT_HPP_
