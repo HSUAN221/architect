@@ -5,6 +5,7 @@
 void createProducts(architect::MDXProductRepo* const mdx_product_repo) {
     mdx_product_repo->append(new architect::ProductA());
     mdx_product_repo->append(new architect::ProductB());
+    // delete ptr by MDXProductRepo
 }
 
 void registerProducts(architect::ProductFactory* const product_factory,
@@ -24,5 +25,7 @@ int main(int argc, char **argv) {
     registerProducts(product_factory, mdx_product_repo);
     runProduct(product_factory->create("product-A"));
     runProduct(product_factory->create("product-B"));
+    delete mdx_product_repo;
+    delete product_factory;
     return 0;
 }
