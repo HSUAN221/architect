@@ -36,29 +36,35 @@
 #ifndef SRC_ARCHITECT_PROTOTYPE_HPP_
 #define SRC_ARCHITECT_PROTOTYPE_HPP_
 namespace architect {
-class Product {
+class ProductInterface {
  public:
-    Product() = default;
-    virtual ~Product() = default;
-    virtual Product* clone() const = 0;
+    ProductInterface() = default;
+    virtual ~ProductInterface() {
+        std::cout << ">> ProductInterface destructor" << std::endl;
+    }
+    virtual ProductInterface* clone() const = 0;
     virtual std::string id() const noexcept = 0;
 };
 
 class ProductRepoInterface {
  public:
     ProductRepoInterface() = default;
-    virtual ~ProductRepoInterface() = default;
-    virtual void append(Product*) = 0;
+    virtual ~ProductRepoInterface() {
+        std::cout << ">> ProductRepoInterface destructor" << std::endl;
+    }
+    virtual void append(ProductInterface*) = 0;
     virtual size_t size() const noexcept = 0;
-    virtual std::vector<Product*> getProductFamily() const noexcept = 0;
+    virtual std::vector<ProductInterface*> getProductFamily() const noexcept = 0;
 };
 
-class ProductA : public Product {
+class ProductA : public ProductInterface {
  private:
     std::string product_id_ = "product-A";
  public:
     ProductA() = default;
-    virtual ~ProductA() = default;
+    virtual ~ProductA() {
+        std::cout << ">> ProductA destructor" << std::endl;
+    }
 
     // 補充說明: covariance
     // https://blog.csdn.net/ithiker/article/details/109013385
@@ -73,12 +79,14 @@ class ProductA : public Product {
     }
 };
 
-class ProductB : public Product {
+class ProductB : public ProductInterface {
  private:
     std::string product_id_ = "product-B";
  public:
     ProductB() = default;
-    virtual ~ProductB() = default;
+    virtual ~ProductB() {
+        std::cout << ">> ProductB destructor" << std::endl;
+    }
 
     ProductB* clone() const override {
         return new ProductB;
@@ -93,13 +101,15 @@ class ProductB : public Product {
 // 動態的寫法
 class ProductFactory {
  private:
-    std::unordered_map<std::string, Product*> products_;
+    std::unordered_map<std::string, ProductInterface*> products_;
 
  public:
     ProductFactory() = default;
-    virtual ~ProductFactory() = default;
+    virtual ~ProductFactory() {
+        std::cout << ">> ProductFactory destructor" << std::endl;
+    }
 
-    void registerProducts(ProductRepoInterface* product_repo) {
+    void registerProducts(const std::shared_ptr<ProductRepoInterface>& product_repo) {
         auto products = product_repo->getProductFamily();
         for (auto product : products) {
             if (products_.count(product->id()))
@@ -108,7 +118,7 @@ class ProductFactory {
         }
     }
 
-    Product* create(std::string product_id) {
+    ProductInterface* create(std::string product_id) {
         if (products_.find(product_id) != products_.end()) {
             return products_.find(product_id)->second->clone();
         } else {
@@ -121,16 +131,17 @@ class ProductFactory {
 
 class MDXProductRepo : public ProductRepoInterface {
  private:
-    std::vector<Product*> products_;
+    std::vector<ProductInterface*> products_;
 
  public:
     MDXProductRepo() = default;
     virtual ~MDXProductRepo() {
         for (auto p : products_)
             delete p;
+        std::cout << ">> MDXProductRepo destructor" << std::endl;
     }
 
-    void append(Product* p) {
+    void append(ProductInterface* p) {
         products_.push_back(p);
     }
 
@@ -138,7 +149,7 @@ class MDXProductRepo : public ProductRepoInterface {
         return products_.size();
     }
 
-    std::vector<Product*> getProductFamily() const noexcept {
+    std::vector<ProductInterface*> getProductFamily() const noexcept {
         return products_;
     }
 };
