@@ -11,6 +11,7 @@ int main(int argc, char **argv) {
     renter->send("i am r");
 
     // shared_ptr 循環依賴鏈
+    // https://www.stubbornhuang.com/782/
     auto A = std::make_shared<architect::TestA>();
     auto B = std::make_shared<architect::TestB>(A);
     return 0;
