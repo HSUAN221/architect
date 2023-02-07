@@ -20,4 +20,5 @@
 #include <architect/prototype.hpp>
 #include <architect/prototype_smart_ptr.hpp>
 #include <architect/mediator.hpp>
+#include <architect/state.hpp>
 #endif  // SRC_ARCHITECT_ARCHITECT_HPP_
