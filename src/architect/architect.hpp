@@ -22,4 +22,5 @@
 #include <architect/mediator.hpp>
 #include <architect/state.hpp>
 #include <architect/linklist.hpp>
+#include <architect/sort.hpp>
 #endif  // SRC_ARCHITECT_ARCHITECT_HPP_
