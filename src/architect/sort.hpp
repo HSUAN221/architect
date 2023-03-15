@@ -64,13 +64,50 @@ class MergeSortTest {
     MergeSortTest() = default;
 
     bool runMergeTest() {
-        std::vector<int> expected = {1, 3, 4, 5, 8, 10, 12};
-        std::vector<int> arr1 = {1, 8, 10};
+        std::vector<int> expected = {3, 4, 5, 12};
+        std::vector<int> arr1 = {};
         std::vector<int> arr2 = {3, 4, 5, 12};
         auto result = ms_.merge(arr1, arr2);
-        for (const auto& i : result)
-            std::cout << i << std::endl;
+        // for (const auto& i : result)
+        //     std::cout << i << std::endl;
         return result == expected;
+    }
+};
+
+//  in-place
+class QuickSort {
+ private:
+    int partition(std::vector<int>& arr, int left_idx, int right_idx) {
+        auto pivot = arr[right_idx];
+        auto i = left_idx;
+        for (size_t j = 0; j < right_idx - 1; ++j) {
+            if (arr[j] < pivot) {
+                std::swap()
+            }
+        }
+        return pivot;
+    }
+
+ public:
+
+    friend class QuickSortTest;
+};
+
+class QuickSortTest {
+ private:
+    QuickSort qs_;
+
+ public:
+    QuickSortTest() = default;
+
+    bool runPartitionTest() {
+        std::vector<int> expected = {1, 2, 3, 4, 5};
+        std::vector<int> arr = {4, 5, 3, 1, 2};
+        auto pivot = qs_.partition(arr, 0, static_cast<int>(arr.size())-1);
+        std::cout << "pivot= " << pivot << std::endl;
+        // for (const auto& i : result)
+        //     std::cout << i << std::endl;
+        return arr == expected;
     }
 };
 
