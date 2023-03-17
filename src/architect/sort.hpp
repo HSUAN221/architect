@@ -77,12 +77,20 @@ class MergeSortTest {
 //  in-place
 class QuickSort {
  private:
+    int randomizePivot(int left_idx, int right_idx) {
+        std::random_device rd();
+        std::default_random_engine generator(rd());
+        std::uniform_int_distribution unii(left_idx, right_idx);
+        return unii(generator);
+    }
+
     int partition(std::vector<int>& arr, int left_idx, int right_idx) {
-        auto pivot = arr[right_idx];
+        auto pivot = randomizePivot();
+        std::swap(arr[pivot], arr[right_idx);
         auto i = left_idx;
         for (size_t j = 0; j < right_idx - 1; ++j) {
             if (arr[j] < pivot) {
-                std::swap()
+                // std::swap()
             }
         }
         return pivot;
