@@ -25,5 +25,10 @@ int main(int argc, char **argv) {
     cs.run(arr);
     for (const auto& i : arr)
         std::cout << "CountingSort>> " << i << std::endl;
+
+    std::vector<int> arr1 = {99, 7, 100, 4, 5, 2, 57, 34, 2, 2, 4, 5};
+    architect::InsertSort().run(arr1);
+    for (const auto& i : arr1)
+        std::cout << "<InsertSort> " << i << std::endl;
     return 0;
 }

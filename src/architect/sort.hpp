@@ -172,6 +172,24 @@ class CountingSort {
     }
 };
 
+class InsertSort {
+ public:
+    InsertSort() = default;
+
+    ~InsertSort() = default;
+
+    void run(std::vector<int>& arr) {
+        for (int i = 1; i < arr.size(); i++) {
+            auto key = arr[i];
+            auto j = i - 1;
+            while (key < arr[j] && j >= 0) {
+                arr[j+1] = arr[j];
+                j--;
+            }
+            arr[j+1] = key;
+        }
+    }
+};
 
 }  // namespace architect
 #endif  // SRC_ARCHITECT_SORT_HPP_
