@@ -30,7 +30,7 @@ class ServiceLocator {
         auto pos = instances_.find(hash_key);
         if (pos != instances_.end())
             return std::static_pointer_cast<T>(pos->second);
-        return nullptr
+        return nullptr;
     }
 };
 }  // namespace architect
