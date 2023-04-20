@@ -23,4 +23,5 @@
 #include <architect/state.hpp>
 #include <architect/linklist.hpp>
 #include <architect/sort.hpp>
+#include <architect/locator.hpp>
 #endif  // SRC_ARCHITECT_ARCHITECT_HPP_
