@@ -24,4 +24,5 @@
 #include <architect/linklist.hpp>
 #include <architect/sort.hpp>
 #include <architect/locator.hpp>
+#include <architect/solver_builder.hpp>
 #endif  // SRC_ARCHITECT_ARCHITECT_HPP_
