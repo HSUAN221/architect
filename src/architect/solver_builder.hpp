@@ -4,6 +4,8 @@
 #include <architect/solver_component.hpp>
 namespace architect {
 
+
+
 class SolverBuilderBase {
  protected:
     std::unordered_map<size_t, std::shared_ptr<void>> instances_;
@@ -21,13 +23,18 @@ class SolverBuilderBase {
 
     template<typename T>
     void registerInstance(T* instance = new T()) {
+        static_assert(std::is_base_of<ProcessBase, T>::value,
+        "Plz use Base Object(ProcessBase) to define process");
         const size_t hash_key = typeid(T).hash_code();
         if (instances_.find(hash_key) == instances_.end())
             instances_.emplace(hash_key, std::shared_ptr<void>(instance));
     }
 
+
     template<typename T>
     std::shared_ptr<T> resolve() const {
+        static_assert(std::is_base_of<ProcessBase, T>::value,
+        "Plz use Base Object(ProcessBase) to define process");
         const size_t hash_key = typeid(T).hash_code();
         auto pos = instances_.find(hash_key);
         if (pos != instances_.end())
