@@ -2,11 +2,11 @@
 #include <architect/architect.hpp>
 
 using architect::ServiceLocator;
-using architect::KernelLocator;
 using architect::ProcessBase;
 using architect::SolverBuilderBase;
 using architect::KernelSolver;
 using architect::MeshRepo;
+using architect::KernelRepo;
 
 
 
@@ -22,20 +22,20 @@ struct DispenserParaRepo {
 class Problem : public ProcessBase {
     using base = ProcessBase;
  public:
-    Problem(KernelLocator& kernel, ServiceLocator& locator)
-    : base::ProcessBase(kernel, locator) {}
+    Problem(KernelRepo& kernel, const ServiceLocator& locator)
+    : base(kernel, locator) {}
 
     void run() override {
-        const auto& kernel_solver = kernel_.resolve<KernelSolver>();
-        const auto& mesh_repo = locator_.resolve<MeshRepo>();
         const auto& dispenser_para_repo = locator_.resolve<DispenserParaRepo>();
+        auto kernel_solver = kernel_.kernel_solver();
+        auto mesh_repo = kernel_.mesh_repo();
 
         std::cout << "\n * define IC BCs" << std::endl;
         std::cout << "<<\n";
         std::cout << "DispenserParaRepo->type = " <<
         dispenser_para_repo->type << std::endl;
-        kernel_solver->api();
-        mesh_repo->api();
+        kernel_solver.api();
+        mesh_repo.api();
         std::cout << ">>\n";
     }
 };
@@ -43,21 +43,21 @@ class Problem : public ProcessBase {
 class NumericalPara : public ProcessBase {
     using base = ProcessBase;
  public:
-    NumericalPara(KernelLocator& kernel, ServiceLocator& locator)
-    : base::ProcessBase(kernel, locator) {}
+    NumericalPara(KernelRepo& kernel, const ServiceLocator& locator)
+    : base(kernel, locator) {}
 
     void run() override {
-        const auto& kernel_solver = kernel_.resolve<KernelSolver>();
-        const auto& mesh_repo = locator_.resolve<MeshRepo>();
         const auto& dispenser_para_repo = locator_.resolve<DispenserParaRepo>();
+        auto kernel_solver = kernel_.kernel_solver();
+        auto mesh_repo = kernel_.mesh_repo();
 
         dispenser_para_repo->type = 100;
         std::cout << "\n * define numerical parameters" << std::endl;
         std::cout << "<<\n";
         std::cout << "DispenserParaRepo->type = " <<
         dispenser_para_repo->type << std::endl;
-        kernel_solver->api();
-        mesh_repo->api();
+        kernel_solver.api();
+        mesh_repo.api();
         std::cout << ">>\n";
     }
 };
@@ -65,20 +65,20 @@ class NumericalPara : public ProcessBase {
 class Run : public ProcessBase {
     using base = ProcessBase;
  public:
-    Run(KernelLocator& kernel, ServiceLocator& locator)
-    : base::ProcessBase(kernel, locator) {}
+    Run(KernelRepo& kernel, const ServiceLocator& locator)
+    : base(kernel, locator) {}
 
     void run() override {
-        const auto& kernel_solver = kernel_.resolve<KernelSolver>();
-        const auto& mesh_repo = locator_.resolve<MeshRepo>();
         const auto& dispenser_para_repo = locator_.resolve<DispenserParaRepo>();
+        auto kernel_solver = kernel_.kernel_solver();
+        auto mesh_repo = kernel_.mesh_repo();
 
         std::cout << "\n * define the flow solver algorithm" << std::endl;
         std::cout << "<<\n";
         std::cout << "DispenserParaRepo->type = " <<
         dispenser_para_repo->type << std::endl;
-        kernel_solver->api();
-        mesh_repo->api();
+        kernel_solver.api();
+        mesh_repo.api();
         std::cout << ">>\n";
     }
 };
@@ -110,20 +110,24 @@ int main(int argc, char **argv) {
     underfill_locator.resolve<DispenserParaRepo>()->type = 5;
 
     // 建立核心計算資源
-    KernelLocator solver_kernel;
-    solver_kernel.registerInstance(new KernelSolver());
-    solver_kernel.registerInstance(new MeshRepo());
+    KernelSolver kernel_solver;
+    MeshRepo mesh_repo;
+
+    // 打包核心計算資源
+    KernelRepo kernel(kernel_solver, mesh_repo);
 
     // 建立計算物件
     UnderfillSolver uf_solver;
 
     // 建立計算流程 (可以自由定義) & 註冊計算流程 (註冊代表之後計算要用的)
-    uf_solver.registerInstance(new Problem(solver_kernel, underfill_locator));
-    uf_solver.registerInstance(new NumericalPara(solver_kernel, underfill_locator));
-    uf_solver.registerInstance(new Run(solver_kernel, underfill_locator));
-
+    uf_solver.registerInstance(new Problem(kernel, underfill_locator));
+    uf_solver.registerInstance(new NumericalPara(kernel, underfill_locator));
+    uf_solver.registerInstance(new Run(kernel, underfill_locator));
 
     // 執行計算流程
     uf_solver.run();
+
+    // 清理資源
+    uf_solver.clear();
     return 0;
 }
