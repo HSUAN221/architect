@@ -57,6 +57,14 @@ class Solver {
     }
 };
 
+
+class Test {
+ public:
+    int type = 0;
+
+};
+
+
 int main(int argc, char **argv) {
     /// 建立服務定位者
     architect::ServiceLocator locator;
@@ -82,9 +90,25 @@ int main(int argc, char **argv) {
     auto math_service_3_from_solver = solver->mathPackage();
     std::cout << "<outside solver object> "
     << math_service_3_from_solver->val << " " << math_service_3_from_solver->state << std::endl;
-
+    math_service_3_from_solver->val = 58;
     /// solver 內使用 pkg
     solver->showVar();
+
+
+    Test test;
+    test.type = 55;
+
+    MathService2 math_2;
+    architect::ServiceLocator test_locator;
+    test_locator.registerInstance(math_2);
+    test_locator.registerInstance<Test>(test);
+    auto math_2_ptr = locator.resolve<MathService2>();
+    auto test_2_ptr = test_locator.resolve<Test>();
+    std::cout << "g " << math_2_ptr->add(5, 100) << std::endl;
+    std::cout << "g " << test_2_ptr->type << std::endl;
+    test_2_ptr->type = 125;
+
+    std::cout << "g2 " << test_2_ptr->type << std::endl;
 
     return 0;
 }

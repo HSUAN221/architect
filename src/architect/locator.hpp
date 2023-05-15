@@ -36,6 +36,14 @@ class ServiceLocator : public LocatorInterface {
     }
 
     template<typename T>
+    void registerInstance(T instance) {
+        const size_t hash_key = typeid(T).hash_code();
+        if (instances_.find(hash_key) == instances_.end()) {
+            instances_.emplace(hash_key, std::shared_ptr<void>(new T(instance)));
+        }
+    }
+
+    template<typename T>
     std::shared_ptr<T> resolve() const {
         const size_t hash_key = typeid(T).hash_code();
         auto pos = instances_.find(hash_key);
@@ -65,6 +73,14 @@ class KernelLocator : public LocatorInterface {
         const size_t hash_key = typeid(T).hash_code();
         if (instances_.find(hash_key) == instances_.end())
             instances_.emplace(hash_key, std::shared_ptr<void>(instance));
+    }
+
+    template<typename T>
+    void registerInstance(T instance) {
+        const size_t hash_key = typeid(T).hash_code();
+        if (instances_.find(hash_key) == instances_.end()) {
+            instances_.emplace(hash_key, std::shared_ptr<void>(new T(instance)));
+        }
     }
 
     template<typename T>
