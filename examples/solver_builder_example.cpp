@@ -2,6 +2,7 @@
 #include <architect/architect.hpp>
 
 using architect::ServiceLocator;
+using architect::KernelLocator;
 using architect::ProcessBase;
 using architect::SolverBuilderBase;
 using architect::KernelSolver;
@@ -19,68 +20,65 @@ struct DispenserParaRepo {
 // 自由定義每個計算階段
 //-------------------------------------------------------------------------------------------------//
 class Problem : public ProcessBase {
- private:
-    KernelSolver solver_;
-    MeshRepo mesh_repo_;
-    ServiceLocator locator_;
-
+    using base = ProcessBase;
  public:
-    Problem(KernelSolver& solver, MeshRepo& mesh_repo,
-    const ServiceLocator& locator)
-    : solver_(solver), mesh_repo_(mesh_repo), locator_(locator) {}
+    Problem(KernelLocator& kernel, const ServiceLocator& locator)
+    : base::ProcessBase(kernel, locator) {}
 
     void run() override {
+        const auto& kernel_solver = kernel_.resolve<KernelSolver>();
+        const auto& mesh_repo = locator_.resolve<MeshRepo>();
+        const auto& dispenser_para_repo = locator_.resolve<DispenserParaRepo>();
+
         std::cout << "\n * define IC BCs" << std::endl;
         std::cout << "<<\n";
         std::cout << "DispenserParaRepo->type = " <<
-        locator_.resolve<DispenserParaRepo>()->type << std::endl;
-        solver_.api();
-        mesh_repo_.api();
+        dispenser_para_repo->type << std::endl;
+        kernel_solver->api();
+        mesh_repo->api();
         std::cout << ">>\n";
     }
 };
 
 class NumericalPara : public ProcessBase {
- private:
-    KernelSolver solver_;
-    MeshRepo mesh_repo_;
-    ServiceLocator locator_;
-
+    using base = ProcessBase;
  public:
-    NumericalPara(KernelSolver& solver, MeshRepo& mesh_repo,
-    const ServiceLocator& locator)
-    : solver_(solver), mesh_repo_(mesh_repo), locator_(locator) {}
+    NumericalPara(KernelLocator& kernel, const ServiceLocator& locator)
+    : base::ProcessBase(kernel, locator) {}
 
     void run() override {
-        locator_.resolve<DispenserParaRepo>()->type = 100;
+        const auto& kernel_solver = kernel_.resolve<KernelSolver>();
+        const auto& mesh_repo = locator_.resolve<MeshRepo>();
+        const auto& dispenser_para_repo = locator_.resolve<DispenserParaRepo>();
+
+        dispenser_para_repo->type = 100;
         std::cout << "\n * define numerical parameters" << std::endl;
         std::cout << "<<\n";
         std::cout << "DispenserParaRepo->type = " <<
-        locator_.resolve<DispenserParaRepo>()->type << std::endl;
-        solver_.api();
-        mesh_repo_.api();
+        dispenser_para_repo->type << std::endl;
+        kernel_solver->api();
+        mesh_repo->api();
         std::cout << ">>\n";
     }
 };
 
 class Run : public ProcessBase {
- private:
-    KernelSolver solver_;
-    MeshRepo mesh_repo_;
-    ServiceLocator locator_;
-
+    using base = ProcessBase;
  public:
-    Run(KernelSolver& solver, MeshRepo& mesh_repo,
-    const ServiceLocator& locator)
-    : solver_(solver), mesh_repo_(mesh_repo), locator_(locator) {}
+    Run(KernelLocator& kernel, const ServiceLocator& locator)
+    : base::ProcessBase(kernel, locator) {}
 
     void run() override {
+        const auto& kernel_solver = kernel_.resolve<KernelSolver>();
+        const auto& mesh_repo = locator_.resolve<MeshRepo>();
+        const auto& dispenser_para_repo = locator_.resolve<DispenserParaRepo>();
+
         std::cout << "\n * define the flow solver algorithm" << std::endl;
         std::cout << "<<\n";
         std::cout << "DispenserParaRepo->type = " <<
-        locator_.resolve<DispenserParaRepo>()->type << std::endl;
-        solver_.api();
-        mesh_repo_.api();
+        dispenser_para_repo->type << std::endl;
+        kernel_solver->api();
+        mesh_repo->api();
         std::cout << ">>\n";
     }
 };
@@ -104,21 +102,25 @@ class UnderfillSolver : public SolverBuilderBase {
 };
 //-------------------------------------------------------------------------------------------------//
 
+
 int main(int argc, char **argv) {
     // 建立計算資源
     ServiceLocator underfill_locator;
     underfill_locator.registerInstance(new DispenserParaRepo());
     underfill_locator.resolve<DispenserParaRepo>()->type = 5;
-    KernelSolver solver;
-    MeshRepo mesh_repo;
+
+    // 建立核心計算資源
+    KernelLocator solver_kernel;
+    solver_kernel.registerInstance(new KernelSolver());
+    solver_kernel.registerInstance(new MeshRepo());
 
     // 建立計算物件
     UnderfillSolver uf_solver;
 
     // 建立計算流程 (可以自由定義) & 註冊計算流程 (註冊代表之後計算要用的)
-    uf_solver.registerInstance(new Problem(solver, mesh_repo, underfill_locator));
-    uf_solver.registerInstance(new NumericalPara(solver, mesh_repo, underfill_locator));
-    uf_solver.registerInstance(new Run(solver, mesh_repo, underfill_locator));
+    uf_solver.registerInstance(new Problem(solver_kernel, underfill_locator));
+    uf_solver.registerInstance(new NumericalPara(solver_kernel, underfill_locator));
+    uf_solver.registerInstance(new Run(solver_kernel, underfill_locator));
 
 
     // 執行計算流程

@@ -1,34 +1,41 @@
 // Copyright (c) 2022 LucaWei
 #include <architect/architect.hpp>
 
-class MathServiceInterface {};
+class MathServiceInterface {
+ public:
+    virtual float add(const float& a, const float& b) {
+        std::cout << "Hi, I'm default add ^^" << std::endl;
+        return 0;
+    }
+};
 
-class MathService : public MathServiceInterface {
+class MathService1 : public MathServiceInterface {
  public:
     int state;
 
-    float add(const float& a, const float& b) { return a + b; }
+    float add(const float& a, const float& b) override { return a + b; }
     float subtract(const float& a, const float& b) { return a - b; }
     float multiply(const float& a, const float& b) { return a * b; }
     float divide(const float& a, const float& b) { return a / b; }
 };
 
-class MyMathService : public MathServiceInterface {
+class MathService2 : public MathServiceInterface {
  public:
     int state;
 
-    float add(const float& a, const float& b) { return (a + b) * 2; }
+    float add(const float& a, const float& b) override { return (a + b) * 2; }
     float subtract(const float& a, const float& b) { return a - b; }
     float multiply(const float& a, const float& b) { return a * b; }
     float divide(const float& a, const float& b) { return a / b; }
 };
 
-class MyMathPackage : public MathServiceInterface {
+class MathService3 : public MathServiceInterface {
  public:
     int state;
     double val;
 
-    explicit MyMathPackage(double val) : val(val) {}
+    explicit MathService3(double val) : val(val) {}
+    float add(const float& a, const float& b) override { return (a + b) * 200; }
 };
 
 class Solver {
@@ -39,13 +46,13 @@ class Solver {
     explicit Solver(const architect::ServiceLocator& locator)
     : locator_(locator) {}
 
-    std::shared_ptr<MyMathPackage> mathPackage() {
+    std::shared_ptr<MathService3> mathPackage() {
         // locator_.resolve<MyMathPackage>()->val = 4156.123;
-        return locator_.resolve<MyMathPackage>();
+        return locator_.resolve<MathService3>();
     }
 
     void showVar() {
-        auto math_pkg = locator_.resolve<MyMathPackage>();
+        auto math_pkg = locator_.resolve<MathService3>();
         std::cout << "<inside solver object> " << math_pkg->val << " " << math_pkg->state << std::endl;
     }
 };
@@ -54,26 +61,27 @@ int main(int argc, char **argv) {
     /// 建立服務定位者
     architect::ServiceLocator locator;
 
-    /// 服務定位者註冊 MathService 物件，並使用其物件。
-    locator.registerInstance<MathService>();
-    auto math_service = locator.resolve<MathService>();
-    std::cout << math_service->add(10, 23) << std::endl;
+    /// 服務定位者註冊 MathService1 物件，並使用其物件。
+    locator.registerInstance<MathService1>();
+    const auto& math_service_1 = locator.resolve<MathService1>();
+    std::cout << math_service_1->add(10, 23) << std::endl;
 
-    /// 服務定位者註冊 MyMathService 物件，並使用其物件。
-    locator.registerInstance<MyMathService>();
-    auto my_math_service = locator.resolve<MyMathService>();
-    std::cout << my_math_service->add(10, 23) << std::endl;
+    /// 服務定位者註冊 MathService2 物件，並使用其物件。
+    locator.registerInstance<MathService2>();
+    const auto& math_service_2 = locator.resolve<MathService2>();
+    std::cout << math_service_2->add(10, 23) << std::endl;
 
-    /// 服務定位者註冊 MyMathPackage 物件，然後初始化內部變數。
+    /// 服務定位者註冊 MathService3 物件，然後初始化內部變數。
     architect::ServiceLocator solver_locator;
-    solver_locator.registerInstance<MyMathPackage>(new MyMathPackage(5.2));
-    auto math_pkg = solver_locator.resolve<MyMathPackage>();
-    math_pkg->state = 2;
+    solver_locator.registerInstance<MathService3>(new MathService3(5.2));
+    const auto& math_service_3 = solver_locator.resolve<MathService3>();
+    math_service_3->state = 2;
 
     /// 注入其相依於 Solver 物件，並從 solver 物件拿出 pkg。
     auto solver = std::make_shared<Solver>(solver_locator);
-    auto pkg_from_solver = solver->mathPackage();
-    std::cout << "<outside solver object> " << pkg_from_solver->val << " " << pkg_from_solver->state << std::endl;
+    auto math_service_3_from_solver = solver->mathPackage();
+    std::cout << "<outside solver object> "
+    << math_service_3_from_solver->val << " " << math_service_3_from_solver->state << std::endl;
 
     /// solver 內使用 pkg
     solver->showVar();
