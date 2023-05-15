@@ -22,7 +22,7 @@ struct DispenserParaRepo {
 class Problem : public ProcessBase {
     using base = ProcessBase;
  public:
-    Problem(KernelLocator& kernel, const ServiceLocator& locator)
+    Problem(KernelLocator& kernel, ServiceLocator& locator)
     : base::ProcessBase(kernel, locator) {}
 
     void run() override {
@@ -43,7 +43,7 @@ class Problem : public ProcessBase {
 class NumericalPara : public ProcessBase {
     using base = ProcessBase;
  public:
-    NumericalPara(KernelLocator& kernel, const ServiceLocator& locator)
+    NumericalPara(KernelLocator& kernel, ServiceLocator& locator)
     : base::ProcessBase(kernel, locator) {}
 
     void run() override {
@@ -65,7 +65,7 @@ class NumericalPara : public ProcessBase {
 class Run : public ProcessBase {
     using base = ProcessBase;
  public:
-    Run(KernelLocator& kernel, const ServiceLocator& locator)
+    Run(KernelLocator& kernel, ServiceLocator& locator)
     : base::ProcessBase(kernel, locator) {}
 
     void run() override {
