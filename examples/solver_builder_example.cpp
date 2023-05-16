@@ -24,16 +24,16 @@ class Problem : public ProcessBase {
     using base = ProcessBase;
 
  private:
-    KernelRepo kernel_;
+    std::shared_ptr<KernelRepo> kernel_;
 
  public:
-    Problem(KernelRepo& kernel, const ServiceLocator& locator)
+    Problem(const std::shared_ptr<KernelRepo>& kernel, const ServiceLocator& locator)
     : kernel_(kernel), base(locator) {}
 
     void run() override {
         const auto& dispenser_para_repo = locator_.resolve<DispenserParaRepo>();
-        auto kernel_solver = kernel_.kernel_solver();
-        auto mesh_repo = kernel_.mesh_repo();
+        auto kernel_solver = kernel_->kernel_solver();
+        auto mesh_repo = kernel_->mesh_repo();
 
         std::cout << "\n * define IC BCs" << std::endl;
         std::cout << "<<\n";
@@ -49,16 +49,16 @@ class NumericalPara : public ProcessBase {
     using base = ProcessBase;
 
  private:
-    KernelRepo kernel_;
+    std::shared_ptr<KernelRepo> kernel_;
 
  public:
-    NumericalPara(KernelRepo& kernel, const ServiceLocator& locator)
+    NumericalPara(const std::shared_ptr<KernelRepo>& kernel, const ServiceLocator& locator)
     : kernel_(kernel), base(locator) {}
 
     void run() override {
         const auto& dispenser_para_repo = locator_.resolve<DispenserParaRepo>();
-        auto kernel_solver = kernel_.kernel_solver();
-        auto mesh_repo = kernel_.mesh_repo();
+        auto kernel_solver = kernel_->kernel_solver();
+        auto mesh_repo = kernel_->mesh_repo();
 
         dispenser_para_repo->type = 100;
         std::cout << "\n * define numerical parameters" << std::endl;
@@ -75,14 +75,18 @@ class TimeIterator : public ProcessBase {
     using base = ProcessBase;
 
  private:
-    KernelRepo kernel_;
+    std::shared_ptr<KernelRepo> kernel_;
 
  public:
-    TimeIterator(KernelRepo& kernel, const ServiceLocator& locator)
+    TimeIterator(const std::shared_ptr<KernelRepo>& kernel, const ServiceLocator& locator)
     : kernel_(kernel), base(locator) {}
 
     void run() override {
         std::cout << "\n * define the time iterator" << std::endl;
+        const auto& dispenser_para_repo = locator_.resolve<DispenserParaRepo>();
+        std::cout << dispenser_para_repo->type << std::endl;
+        auto& kernel_solver = kernel_->kernel_solver();
+        kernel_solver.api();
     }
 };
 
@@ -95,18 +99,20 @@ class Run : public ProcessBase {
     }
 
  private:
-    KernelRepo kernel_;
+    std::shared_ptr<KernelRepo> kernel_;
 
  public:
-    Run(KernelRepo& kernel, const ServiceLocator& locator)
+    Run(const std::shared_ptr<KernelRepo>& kernel, const ServiceLocator& locator)
     : kernel_(kernel), base(locator) {}
 
     void run() override {
         registerSubprocesses();
+        locator_.resolve<DispenserParaRepo>()->type = 52;
         const auto& dispenser_para_repo = locator_.resolve<DispenserParaRepo>();
-        auto kernel_solver = kernel_.kernel_solver();
-        auto mesh_repo = kernel_.mesh_repo();
-
+        auto& kernel_solver = kernel_->kernel_solver();
+        auto& mesh_repo = kernel_->mesh_repo();
+        kernel_solver.type() = 56;
+        dispenser_para_repo->type = 89;
         std::cout << "\n * define the flow solver algorithm" << std::endl;
         std::cout << "<<\n";
         std::cout << "DispenserParaRepo->type = " <<
@@ -150,7 +156,7 @@ int main(int argc, char **argv) {
     MeshRepo mesh_repo;
 
     // 打包核心計算資源
-    KernelRepo kernel(kernel_solver, mesh_repo);
+    auto kernel = std::make_shared<KernelRepo>(kernel_solver, mesh_repo);
 
     // 建立計算物件
     UnderfillSolver uf_solver;

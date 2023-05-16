@@ -3,11 +3,18 @@
 #define SRC_ARCHITECT_SOLVER_KERNEL_HPP_
 namespace architect {
 class KernelSolver{
+ private:
+    int type_ = 0;
+
  public:
     KernelSolver() = default;
 
+    int& type() {
+        return type_;
+    }
+
     void api() {
-        std::cout << "Hi, I'm KernelSolver." << std::endl;
+        std::cout << "Hi, I'm KernelSolver. type = " << type_  << std::endl;
     }
 };
 class MeshRepo{
