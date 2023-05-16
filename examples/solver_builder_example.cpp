@@ -1,6 +1,7 @@
 // Copyright (c) 2022 LucaWei
-#include <architect/architect.hpp>
-
+#include <architect/definitions.hpp>
+#include <architect/solver_kernel.hpp>
+#include <architect/solver_builder.hpp>
 using architect::ServiceLocator;
 using architect::ProcessBase;
 using architect::SolverBuilderBase;

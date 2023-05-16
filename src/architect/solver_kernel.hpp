@@ -1,7 +1,6 @@
 // Copyright (c)
 #ifndef SRC_ARCHITECT_SOLVER_KERNEL_HPP_
 #define SRC_ARCHITECT_SOLVER_KERNEL_HPP_
-#include <architect/solver_kernel.hpp>
 namespace architect {
 class KernelSolver{
  public:

@@ -1,7 +1,6 @@
 // Copyright (c)
 #ifndef SRC_ARCHITECT_SOLVER_COMPONENT_HPP_
 #define SRC_ARCHITECT_SOLVER_COMPONENT_HPP_
-#include <architect/solver_kernel.hpp>
 #include <architect/locator.hpp>
 namespace architect {
 class ProcessBase {
