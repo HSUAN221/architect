@@ -20,5 +20,33 @@ class MeshRepo{
     }
 };
 
+class KernelRepo {
+ private:
+    KernelSolver kernel_solver_;
+    MeshRepo mesh_repo_;
+
+ public:
+    KernelRepo(KernelSolver& kernel_solver, MeshRepo& mesh_repo)
+    : kernel_solver_(kernel_solver), mesh_repo_(mesh_repo) {}
+
+    virtual ~KernelRepo() = default;
+
+    const KernelSolver& kernel_Solver() const {
+        return kernel_solver_;
+    }
+
+    KernelSolver& kernel_solver() {
+        return kernel_solver_;
+    }
+
+    const MeshRepo& mesh_repo() const {
+        return mesh_repo_;
+    }
+
+    MeshRepo& mesh_repo() {
+        return mesh_repo_;
+    }
+};
+
 }  // namespace architect
 #endif  // SRC_ARCHITECT_SOLVER_KERNEL_HPP_
