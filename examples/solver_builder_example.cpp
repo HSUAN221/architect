@@ -21,9 +21,13 @@ struct DispenserParaRepo {
 //-------------------------------------------------------------------------------------------------//
 class Problem : public ProcessBase {
     using base = ProcessBase;
+
+ private:
+    KernelRepo kernel_;
+
  public:
     Problem(KernelRepo& kernel, const ServiceLocator& locator)
-    : base(kernel, locator) {}
+    : kernel_(kernel), base(locator) {}
 
     void run() override {
         const auto& dispenser_para_repo = locator_.resolve<DispenserParaRepo>();
@@ -42,9 +46,13 @@ class Problem : public ProcessBase {
 
 class NumericalPara : public ProcessBase {
     using base = ProcessBase;
+
+ private:
+    KernelRepo kernel_;
+
  public:
     NumericalPara(KernelRepo& kernel, const ServiceLocator& locator)
-    : base(kernel, locator) {}
+    : kernel_(kernel), base(locator) {}
 
     void run() override {
         const auto& dispenser_para_repo = locator_.resolve<DispenserParaRepo>();
@@ -64,9 +72,13 @@ class NumericalPara : public ProcessBase {
 
 class TimeIterator : public ProcessBase {
     using base = ProcessBase;
+
+ private:
+    KernelRepo kernel_;
+
  public:
     TimeIterator(KernelRepo& kernel, const ServiceLocator& locator)
-    : base(kernel, locator) {}
+    : kernel_(kernel), base(locator) {}
 
     void run() override {
         std::cout << "\n * define the time iterator" << std::endl;
@@ -75,14 +87,18 @@ class TimeIterator : public ProcessBase {
 
 class Run : public ProcessBase {
     using base = ProcessBase;
+
  protected:
     void registerSubprocesses() override {
         base::registerInstance(new TimeIterator(kernel_, locator_));
     }
 
+ private:
+    KernelRepo kernel_;
+
  public:
     Run(KernelRepo& kernel, const ServiceLocator& locator)
-    : base(kernel, locator) {}
+    : kernel_(kernel), base(locator) {}
 
     void run() override {
         registerSubprocesses();

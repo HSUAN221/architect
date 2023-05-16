@@ -37,7 +37,6 @@ class ProcessBase {
     std::unordered_map<size_t, std::shared_ptr<void>> instances_;
 
  protected:
-    KernelRepo kernel_;
     ServiceLocator locator_;
 
     template<typename T>
@@ -66,8 +65,8 @@ class ProcessBase {
 
 
  public:
-    ProcessBase(KernelRepo& kernel, const ServiceLocator& locator)
-    : kernel_(kernel), locator_(locator) {}
+    explicit ProcessBase(const ServiceLocator& locator)
+    : locator_(locator) {}
 
     virtual ~ProcessBase() = default;
 
