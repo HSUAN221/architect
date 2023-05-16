@@ -62,13 +62,30 @@ class NumericalPara : public ProcessBase {
     }
 };
 
+class TimeIterator : public ProcessBase {
+    using base = ProcessBase;
+ public:
+    TimeIterator(KernelRepo& kernel, const ServiceLocator& locator)
+    : base(kernel, locator) {}
+
+    void run() override {
+        std::cout << "\n * define the time iterator" << std::endl;
+    }
+};
+
 class Run : public ProcessBase {
     using base = ProcessBase;
+ protected:
+    void registerSubprocesses() override {
+        base::registerInstance(new TimeIterator(kernel_, locator_));
+    }
+
  public:
     Run(KernelRepo& kernel, const ServiceLocator& locator)
     : base(kernel, locator) {}
 
     void run() override {
+        registerSubprocesses();
         const auto& dispenser_para_repo = locator_.resolve<DispenserParaRepo>();
         auto kernel_solver = kernel_.kernel_solver();
         auto mesh_repo = kernel_.mesh_repo();
@@ -80,8 +97,10 @@ class Run : public ProcessBase {
         kernel_solver.api();
         mesh_repo.api();
         std::cout << ">>\n";
+        base::resolve<TimeIterator>()->run();
     }
 };
+
 //-------------------------------------------------------------------------------------------------//
 
 
