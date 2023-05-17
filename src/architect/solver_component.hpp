@@ -34,6 +34,8 @@ class ProcessBase {
         std::cout << "Plz register subprocesses" << std::endl;
     }
 
+    ProcessBase() = delete;
+
 
  public:
     explicit ProcessBase(const ServiceLocator& locator)
