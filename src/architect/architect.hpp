@@ -27,4 +27,5 @@
 #include <architect/solver_kernel.hpp>
 #include <architect/solver_component.hpp>
 #include <architect/solver_builder.hpp>
+#include <architect/command_line.hpp>
 #endif  // SRC_ARCHITECT_ARCHITECT_HPP_
