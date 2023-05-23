@@ -20,7 +20,7 @@ struct DispenserParaRepo {
 
 // 自由定義每個計算階段
 //-------------------------------------------------------------------------------------------------//
-class Problem : public ProcessBase {
+class Problem : protected ProcessBase {
     using base = ProcessBase;
 
  private:
@@ -45,7 +45,7 @@ class Problem : public ProcessBase {
     }
 };
 
-class NumericalPara : public ProcessBase {
+class NumericalPara : protected ProcessBase {
     using base = ProcessBase;
 
  private:
@@ -71,7 +71,7 @@ class NumericalPara : public ProcessBase {
     }
 };
 
-class TimeIterator : public ProcessBase {
+class TimeIterator : protected ProcessBase {
     using base = ProcessBase;
 
  private:
@@ -90,7 +90,19 @@ class TimeIterator : public ProcessBase {
     }
 };
 
-class Run : public ProcessBase {
+class TimeIterator2 : protected ProcessBase {
+    using base = ProcessBase;
+
+ private:
+
+ public:
+    TimeIterator2() = default;
+
+    void run() override {
+    }
+};
+
+class Run : protected ProcessBase {
     using base = ProcessBase;
 
  protected:
