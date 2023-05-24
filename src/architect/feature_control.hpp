@@ -18,7 +18,6 @@ struct FeatureProperties {
 };
 
 class BaseFeature {
-
  private:
     bool is_on_ = false;
     std::string status_ = "Disable";
@@ -88,7 +87,6 @@ class FeatureRepository {
     }
 
  public:
-
     FeatureRepository() = default;
 
     virtual ~FeatureRepository() = default;
