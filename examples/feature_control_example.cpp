@@ -12,6 +12,7 @@ class EbgFeature
     EbgFeature() {}
 
     void readCmpFile(const std::string& cmp_file_path) override {
+        std::cout << "EbgFeature::cmp_file_path: " << cmp_file_path << std::endl;
         test_para_ = 100;
     }
 
@@ -26,6 +27,7 @@ class EbgFeature1
     EbgFeature1() {}
 
     void readCmpFile(const std::string& cmp_file_path) override {
+        std::cout << "EbgFeature1::cmp_file_path: " << cmp_file_path << std::endl;
         test_para_ = 100;
     }
 
@@ -40,19 +42,23 @@ class EbgFeature2
     EbgFeature2() {}
 
     void readCmxFile(const std::string& cmx_file_path) override {
+        std::cout << "EbgFeature2::cmx_file_path: " << cmx_file_path << std::endl;
         test_para_ = 100;
     }
+
 
 };
 //=======================================================//
 
 int main(int argc, char **argv) {
     FeatureProperties backdoor;
+    backdoor.cmx_file_path = "";
     backdoor.cmp_file_path = "path/to/cmp";
     backdoor.type = FeatureProperties::FeatureType::Backdoor;
 
     FeatureProperties frontdoor;
-    frontdoor.cmp_file_path = "path/to/cmx";
+    frontdoor.cmx_file_path = "path/to/cmx";
+    frontdoor.cmp_file_path = "";
     frontdoor.type = FeatureProperties::FeatureType::Frontdoor;
 
 
@@ -73,7 +79,7 @@ int main(int argc, char **argv) {
     features->setFeature("ebg_feature2", ebg_feature2);
 
     auto ebg2 = features->getFeature("ebg_feature2");
-    std::cout << std::boolalpha << ebg2->isOn() << std::endl;
+    std::cout << "\n" << std::boolalpha << ebg2->isOn() << std::endl;
     std::cout << ebg2->status() << std::endl;
     features->info();
     return 0;
