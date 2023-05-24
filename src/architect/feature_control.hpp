@@ -5,47 +5,65 @@
 #include <memory>
 #include <map>
 namespace architect {
-
-
-
-class BaseFeature {
- private:
-    bool is_on_ = false;
-    std::string status_ = "Disable";
-
-    enum class Type {
+struct FeatureProperties {
+    enum class FeatureType {
         Backdoor,
         Frontdoor,
         Disable
     };
 
-    void setStatus(Type type) {
-        if (type == Type::Backdoor) {
+    FeatureType type;
+    std::string cmp_file_path;
+    std::string cmx_file_path;
+};
+
+class BaseFeature {
+
+ private:
+    bool is_on_ = false;
+    std::string status_ = "Disable";
+    std::string file_name_;
+
+ protected:
+    void setStatus(FeatureProperties::FeatureType type) {
+        if (type == FeatureProperties::FeatureType::Backdoor) {
             status_ = "Backdoor";
-        } else if (type == Type::Frontdoor) {
+        } else if (type == FeatureProperties::FeatureType::Frontdoor) {
             status_ = "Frontdoor";
-        } else if (type == Type::Disable) {
+        } else if (type == FeatureProperties::FeatureType::Disable) {
             status_ = "Disable";
         } else {
             throw std::runtime_error("unknown status");
         }
     }
 
-    void setFlag(bool falg) {
-        is_on_ = falg;
+    void setFlag(bool flag) {
+        is_on_ = flag;
     }
+
+    virtual void readCmpFile(const std::string& cmp_file_path) {
+        std::cout << "default read cmp file function" << std::endl;
+    }
+
+    virtual void readCmxFile(const std::string& cmx_file_path) {
+        std::cout << "default read cmx file function" << std::endl;
+    }
+
 
  public:
     BaseFeature() = default;
 
     virtual  ~BaseFeature() = default;
 
-    virtual void readCmpFile(const std::string& cmp_file_name) {
-        std::cout << "default read cmp file function" << std::endl;
-    }
-
-    virtual void readCmxFile(const std::string& cmx_file_name) {
-        std::cout << "default read cmx file function" << std::endl;
+    void initialize(const FeatureProperties& properties) {
+        setStatus(properties.type);
+        if (status() == "Backdoor") {
+            readCmpFile(properties.cmp_file_path);
+            setFlag(true);
+        } else if (status() == "Frontdoor") {
+            readCmxFile(properties.cmx_file_path);
+            setFlag(true);
+        }
     }
 
     const bool& isOn() const {
@@ -55,122 +73,69 @@ class BaseFeature {
     const std::string& status() const {
         return status_;
     }
-
-    friend class ReadCmpCommand;
-    friend class ReadCmxCommand;
 };
 
 
-class BaseCommand {
- protected:
-    std::shared_ptr<BaseFeature> feature_;
-
-    explicit BaseCommand(std::shared_ptr<BaseFeature> feature)
-    : feature_(feature) {}
-
+class FeatureRepository {
  private:
-    BaseCommand() = delete;
+    std::map<std::string, std::shared_ptr<BaseFeature>> features_;
 
-
- public:
-    virtual void exeute() = 0;
-
-    std::shared_ptr<BaseFeature> feature() {
-        return feature_;
-    }
-
-    std::shared_ptr<const BaseFeature> feature() const {
-        return feature_;
-    }
-};
-
-class ReadCmpCommand : public BaseCommand {
- private:
-    std::string cmp_file_name_;
-
- public:
-    explicit ReadCmpCommand(std::shared_ptr<BaseFeature> feature, const std::string& cmp_file_name)
-    : BaseCommand(feature), cmp_file_name_(cmp_file_name) {}
-
-    void exeute() override {
-        feature()->setFlag(true);
-        feature()->setStatus(BaseFeature::Type::Backdoor);
-        feature()->readCmpFile(cmp_file_name_);
-    }
-};
-
-
-class ReadCmxCommand : public BaseCommand {
- private:
-    std::string cmx_file_name_;
-
- public:
-    explicit ReadCmxCommand(std::shared_ptr<BaseFeature> feature, const std::string& cmx_file_name)
-    : BaseCommand(feature), cmx_file_name_(cmx_file_name) {}
-
-    void exeute() override {
-        feature()->setFlag(true);
-        feature()->setStatus(BaseFeature::Type::Frontdoor);
-        feature()->readCmxFile(cmx_file_name_);
-    }
-};
-
-
-
-class FeatureInvoker {
- private:
-    using CommandType = std::shared_ptr<BaseCommand>;
-    using FeatureType = std::shared_ptr<BaseFeature>;
-    using ConstFeatureType = std::shared_ptr<const BaseFeature>;
-    std::map<std::string, CommandType> commands_;
-
- public:
-
-    FeatureInvoker() = default;
-
-    virtual ~FeatureInvoker() = default;
-
-    void setCommand(const char* feature_name, std::shared_ptr<BaseCommand> command) {
-        if (!command)
-            throw std::runtime_error("command is null");
-
-        if (commands_.find(feature_name) == commands_.end())
-            commands_.insert(std::make_pair(feature_name, command));
+    bool isInMap(const char* feature_name) {
+        if (features_.find(feature_name) != features_.end())
+            return true;
         else
-            throw std::runtime_error("command already exists");
+            return false;
     }
 
-    void invoke() {
-        for (auto& command : commands_) {
-            if (command.second) {
-                command.second->exeute();
-            } else {
-                throw std::runtime_error("no command");
-            }
-        }
+ public:
+
+    FeatureRepository() = default;
+
+    virtual ~FeatureRepository() = default;
+
+    void setFeature(const char* feature_name, std::shared_ptr<BaseFeature> feature) {
+        if (!feature)
+            throw std::runtime_error("feature is null");
+
+        if (!isInMap(feature_name))
+            features_.insert(std::make_pair(feature_name, feature));
+        else
+            throw std::runtime_error("feature already exists");
     }
 
-    FeatureType getFeature(const char* feature_name) {
-        if (commands_.find(feature_name) != commands_.end())
-            return commands_[feature_name]->feature();
+    std::shared_ptr<BaseFeature> getFeature(const char* feature_name) {
+        if (isInMap(feature_name))
+            return features_[feature_name];
+        else
+            throw std::runtime_error("no feature");
+    }
+
+    void removeFeature(const char* feature_name) {
+        if (isInMap(feature_name))
+            features_.erase(feature_name);
         else
             throw std::runtime_error("no feature");
     }
 
     void info() {
-        for (auto& command : commands_) {
-            auto feature = command.second->feature();
-            std::string flag = feature->isOn() ? "on" : "off";
+        if (features_.empty()) {
+            std::cout << "FeatureRepository: no features" << std::endl;
+            return;
+        }
+
+        std::cout << "\n[FeatureRepository]" << std::endl;
+        for (auto& feature : features_) {
+            std::string flag = feature.second->isOn() ? "on" : "off";
             std::cout
             << std::boolalpha
-            << "feature name: " << command.first << "\n"
+            << "feature name: " << feature.first << "\n"
             << "flag: " << flag  << "\n"
-            << "source: " << feature->status()  << "\n"
+            << "type: " << feature.second->status()
             << std::endl;
         }
+        std::cout << "[/FeatureRepository]\n" << std::endl;
     }
 };
-
 
 }  // namespace architect
 #endif  // SRC_ARCHITECT_FEATURE_CONTROL_HPP_
