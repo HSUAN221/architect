@@ -8,15 +8,13 @@ class EbgFeature
 : public architect::BaseFeature {
  private:
     int test_para_ = 0;
-    std::string cmp_file_name_;
 
  public:
-    explicit EbgFeature(const std::string& cmp_file_name)
-    : cmp_file_name_(cmp_file_name) {}
+    EbgFeature() {}
 
-    void readCmpFile() override {
+    void readCmpFile(const std::string& cmp_file_name) override {
         std::cout << "EbgFeature: readCmpFile" << std::endl;
-        std::cout << "Here, it's the " << cmp_file_name_ << std::endl;
+        std::cout << "Here, it's the " << cmp_file_name << std::endl;
         test_para_ = 100;
     }
 
@@ -25,8 +23,9 @@ class EbgFeature
 
 int main(int argc, char **argv) {
     architect::Invoker back_door;
-    back_door.setCommand(std::make_shared<ReadCmpCommand>(
-        std::make_shared<EbgFeature>("cmp_file_name")));
+    auto ebg_feature = std::make_shared<EbgFeature>();
+    back_door.setCommand(std::make_shared<ReadCmpCommand>(ebg_feature, "cmp_file_name"));
     back_door.invoke();
+
     return 0;
 }

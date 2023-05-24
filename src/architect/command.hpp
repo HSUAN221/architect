@@ -6,12 +6,12 @@
 namespace architect {
 class BaseFeature {
  public:
-    virtual void readCmpFile() {
+    virtual void readCmpFile(const std::string& cmp_file_name) {
         std::cout << "default read cmp file function" << std::endl;
     }
 
-    virtual void readUiFile() {
-        std::cout << "default read ui file function" << std::endl;
+    virtual void readCmxFile(const std::string& cmx_file_name) {
+        std::cout << "default read cmx file function" << std::endl;
     }
 };
 
@@ -38,25 +38,29 @@ class BaseCommand {
 };
 
 class ReadCmpCommand : public BaseCommand {
+ private:
+    std::string cmp_file_name_;
 
  public:
-    explicit ReadCmpCommand(std::shared_ptr<BaseFeature> feature)
-    : BaseCommand(feature) {}
+    explicit ReadCmpCommand(std::shared_ptr<BaseFeature> feature, const std::string& cmp_file_name)
+    : BaseCommand(feature), cmp_file_name_(cmp_file_name) {}
 
     void exeute() override {
-        feature()->readCmpFile();
+        feature()->readCmpFile(cmp_file_name_);
     }
 };
 
 
-class ReadUiCommand : public BaseCommand {
+class ReadCmxCommand : public BaseCommand {
+ private:
+    std::string cmx_file_name_;
 
  public:
-    explicit ReadUiCommand(std::shared_ptr<BaseFeature> feature)
-    : BaseCommand(feature) {}
+    explicit ReadCmxCommand(std::shared_ptr<BaseFeature> feature, const std::string& cmx_file_name)
+    : BaseCommand(feature), cmx_file_name_(cmx_file_name) {}
 
     void exeute() override {
-        feature()->readUiFile();
+        feature()->readCmxFile(cmx_file_name_);
     }
 };
 
