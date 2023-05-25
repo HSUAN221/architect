@@ -4,7 +4,7 @@ using namespace architect;
 // 建立後門功能囉~
 //=======================================================//
 class EbgFeature
-: public architect::BaseFeature {
+: public architect::FeatureBase {
  private:
     int test_para_ = 0;
 
@@ -19,7 +19,7 @@ class EbgFeature
 };
 
 class EbgFeature1
-: public architect::BaseFeature {
+: public architect::FeatureBase {
  private:
     int test_para_ = 0;
 
@@ -34,7 +34,7 @@ class EbgFeature1
 };
 
 class EbgFeature2
-: public architect::BaseFeature {
+: public architect::FeatureBase {
  private:
     int test_para_ = 0;
 
@@ -49,7 +49,7 @@ class EbgFeature2
 };
 
 class IcFeature
-: public architect::BaseFeature {
+: public architect::FeatureBase {
  private:
     int test_para_ = 0;
 

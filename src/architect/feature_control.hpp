@@ -17,7 +17,7 @@ struct FeatureProperties {
     std::string cmx_file_path;
 };
 
-class BaseFeature {
+class FeatureBase {
  private:
     bool is_on_ = false;
     std::string status_ = "Disable";
@@ -50,9 +50,9 @@ class BaseFeature {
 
 
  public:
-    BaseFeature() = default;
+    FeatureBase() = default;
 
-    virtual  ~BaseFeature() = default;
+    virtual  ~FeatureBase() = default;
 
     void initialize(const FeatureProperties& properties) {
         setStatus(properties.type);
@@ -77,7 +77,7 @@ class BaseFeature {
 
 class FeatureRepository {
  private:
-    std::map<std::string, std::shared_ptr<BaseFeature>> features_;
+    std::map<std::string, std::shared_ptr<FeatureBase>> features_;
 
     bool isInMap(const char* feature_name) {
         if (features_.find(feature_name) != features_.end())
@@ -89,9 +89,11 @@ class FeatureRepository {
  public:
     FeatureRepository() = default;
 
-    virtual ~FeatureRepository() = default;
+    virtual ~FeatureRepository() {
+        clear();
+    }
 
-    void setFeature(const char* feature_name, std::shared_ptr<BaseFeature> feature) {
+    void setFeature(const char* feature_name, std::shared_ptr<FeatureBase> feature) {
         if (!feature)
             throw std::runtime_error("feature is null");
 
@@ -101,7 +103,7 @@ class FeatureRepository {
             throw std::runtime_error("feature already exists");
     }
 
-    std::shared_ptr<BaseFeature> getFeature(const char* feature_name) {
+    std::shared_ptr<FeatureBase> getFeature(const char* feature_name) {
         if (isInMap(feature_name))
             return features_[feature_name];
         else
@@ -132,6 +134,10 @@ class FeatureRepository {
             << std::endl;
         }
         std::cout << "[/FeatureRepository]\n" << std::endl;
+    }
+
+    void clear() {
+        features_.clear();
     }
 };
 
