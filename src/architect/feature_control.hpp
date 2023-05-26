@@ -21,9 +21,7 @@ class FeatureBase {
  private:
     bool is_on_ = false;
     std::string status_ = "Disable";
-    std::string file_name_;
 
- protected:
     void setStatus(FeatureProperties::FeatureType type) {
         if (type == FeatureProperties::FeatureType::Backdoor) {
             status_ = "Backdoor";
@@ -40,6 +38,7 @@ class FeatureBase {
         is_on_ = flag;
     }
 
+ protected:
     virtual void readCmpFile(const std::string& cmp_file_path) {
         std::cout << "default read cmp file function" << std::endl;
     }
