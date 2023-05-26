@@ -122,12 +122,12 @@ class FeatureRepository {
             return;
         }
 
-        std::cout << "\n[FeatureRepository]" << std::endl;
+        std::cout << "\n[FeatureRepository]";
         for (auto& feature : features_) {
             std::string flag = feature.second->isOn() ? "on" : "off";
             std::cout
             << std::boolalpha
-            << "feature name: " << feature.first << "\n"
+            << "\nfeature name: " << feature.first << "\n"
             << "flag: " << flag  << "\n"
             << "type: " << feature.second->status()
             << std::endl;
