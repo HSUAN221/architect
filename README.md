@@ -24,7 +24,7 @@ $ pip install conan
 
 ### Use `conan install` to download all package
 ```console
-$ conan install conanfile.txt -if build -pr conan-profile/Linux-X64-GCC9-Release
+$ conan install conanfile.txt -of build
 ```
 
 ### Build your cmakeFile
