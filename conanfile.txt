@@ -4,7 +4,6 @@ eigen/3.4.0
 
 [tool_requires]
 gtest/1.11.0
-cmake/3.23.2
 
 [generators]
 CMakeDeps

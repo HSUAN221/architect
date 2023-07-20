@@ -24,12 +24,14 @@ $ pip install conan
 
 ### Use `conan install` to download all package
 ```console
-$ conan install conanfile.txt -if build -pr conan-profile/Linux-X64-GCC9-Release
+$ conan install conanfile.txt -of build
 ```
 
 ### Build your cmakeFile
 ```console
 $ cmake -S . -B build/ -DCMAKE_TOOLCHAIN_FILE=build/conan_toolchain.cmake -DCMAKE_BUILD_TYPE=Release
+or
+$ cmake -S . -B build/ --preset=conan-release
 ```
 
 ### Export env variables for building
