@@ -69,6 +69,38 @@ class IcFeature
 };
 //=======================================================//
 
+
+class Com {
+ public:
+    int a = 9;
+};
+
+
+class Test {
+ private:
+    std::shared_ptr<Com> com_;
+
+ public:
+    std::shared_ptr<const Com> getter() const {
+        return com_;
+    }
+
+    std::shared_ptr<Com> getter() {
+        return com_;
+    }
+
+    void setter(std::shared_ptr<Com> other) {
+        com_ = other;
+    }
+
+
+
+    void showAddr() {
+        std::cout << com_.get() << std::endl;
+        std::cout << com_->a << std::endl;
+    }
+};
+
 int main(int argc, char **argv) {
     FeatureProperties backdoor;
     backdoor.cmx_file_path = "";
@@ -108,5 +140,10 @@ int main(int argc, char **argv) {
     std::cout << "\n" << std::boolalpha << ebg2->isOn() << std::endl;
     std::cout << ebg2->status() << std::endl;
     features->info();
+
+
+    std::cout << "======= test =======" << std::endl;
+    Test test_obj;
+
     return 0;
 }
