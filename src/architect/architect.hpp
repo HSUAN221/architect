@@ -28,5 +28,5 @@
 #include <architect/solver_component.hpp>
 #include <architect/solver_builder.hpp>
 #include <architect/feature_control.hpp>
-#include <architect/aspect.hpp>
+#include <architect/aop.hpp>
 #endif  // SRC_ARCHITECT_ARCHITECT_HPP_

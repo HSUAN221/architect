@@ -69,9 +69,11 @@ int main(int argc, char **argv) {
     /// 建立服務定位者
     architect::ServiceLocator locator;
 
+    MathServiceInterface* instance = new MathService1();
+
     /// 服務定位者註冊 MathService1 物件，並使用其物件。
-    locator.registerInstance<MathService1>();
-    const auto& math_service_1 = locator.resolve<MathService1>();
+    locator.registerInstance<MathServiceInterface>(new MathService1());
+    const auto& math_service_1 = locator.resolve<MathServiceInterface>();
     std::cout << math_service_1->add(10, 23) << std::endl;
 
     /// 服務定位者註冊 MathService2 物件，並使用其物件。
