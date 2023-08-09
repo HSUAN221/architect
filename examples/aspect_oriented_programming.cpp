@@ -51,6 +51,26 @@ class Logger : public aop::AspectInterface {
     }
 };
 
+class MemoryChecker : public aop::AspectInterface {
+ public:
+    MemoryChecker() = default;
+    virtual ~MemoryChecker() = default;
+
+    template<typename... Args>
+    void before(Args&&... args) {
+        std::cout
+          << "[MemoryChecker before]"
+          << std::endl;
+    }
+
+    template<typename... Args>
+    void after(Args&&... args) {
+        std::cout
+          << "[MemoryChecker after]"
+          << std::endl;
+    }
+};
+
 class VofSolverProxy : public PhaseSolverInterface {
  private:
     std::shared_ptr<VofSolver> vof_solver_{nullptr};
@@ -65,8 +85,9 @@ class VofSolverProxy : public PhaseSolverInterface {
     VofSolverProxy() = delete;
 
     void before() override {
-        aop::Invoke<Logger>(
+        aop::Invoke<Logger, MemoryChecker>(
           Logger(),
+          MemoryChecker(),
           &VofSolver::before,
           vof_solver_);
     }

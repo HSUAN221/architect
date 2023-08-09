@@ -4,7 +4,7 @@
 #include <map>
 namespace aop {
 class NonCopyable {
-public:
+ public:
     NonCopyable() = default;
 
     ~NonCopyable() = default;
